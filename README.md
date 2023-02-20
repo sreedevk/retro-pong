@@ -11,3 +11,15 @@ Yet another pong
 |left|up|s|
 |right|down|j|
 |right|up|k|
+
+## Installation
+
+```bash
+$ git clone https://github.com/sreedevk/retro-pong
+$ cd retro-pong
+$ cargo run --release
+```
+
+## Todo
+
+1. Game doesn't have a win detection. It will crash after 9 points
