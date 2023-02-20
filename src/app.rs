@@ -113,17 +113,40 @@ impl App {
 
     pub fn tick(&mut self) -> Result<()> {
         self.game.ball.tick();
+        self.update_scores()?;
         self.process_signal()?;
         Ok(())
     }
 
     pub fn draw(&mut self) -> Result<()> {
         let mut new_frame = Frame::new();
-        self.game.container.draw(&mut new_frame)?;
+        self.game.divider.draw(&mut new_frame)?;
         self.game.player1.draw(&mut new_frame)?;
         self.game.player2.draw(&mut new_frame)?;
         self.game.ball.draw(&mut new_frame)?;
         self.app_frame = new_frame;
+
+        Ok(())
+    }
+
+    pub fn update_scores(&mut self) -> Result<()> {
+        if self.game.ball.x == self.game.player1.x1 + 1
+            && (self.game.player1.y1..self.game.player1.y2).contains(&self.game.ball.y)
+        {
+            self.game.score.player1 += 1;
+        }
+
+        if self.game.ball.x == self.game.player2.x1 - 1
+            && (self.game.player2.y1..self.game.player2.y2).contains(&self.game.ball.y)
+        {
+            self.game.score.player2 += 1;
+        }
+
+        if self.game.ball.x == self.game.player1.x1
+            && (self.game.player1.y1..self.game.player1.y2).contains(&self.game.ball.y)
+        {
+            self.game.score.player1 += 1;
+        }
 
         Ok(())
     }
@@ -146,15 +169,24 @@ impl App {
                 .unwrap();
             });
 
+        /* DEBUG INFO */
         write!(
             self.stout,
-            "{}player1: ({},{}) ({}, {})",
+            "{}player1: ({},{}) ({},{}) | player2: ({},{}) ({},{})\tscores => player1: {}\tplayer2: {}",
             termion::cursor::Goto(0, (HEIGHT + 1) as u16),
             self.game.player1.x1,
             self.game.player1.y1,
             self.game.player1.x2,
-            self.game.player1.y2
+            self.game.player1.y2,
+            self.game.player2.x1,
+            self.game.player2.y1,
+            self.game.player2.x2,
+            self.game.player2.y2,
+            self.game.score.player1,
+            self.game.score.player2,
         )?;
+
+        /* DEBUG INFO */
 
         self.stout.flush().unwrap();
         Ok(())

@@ -7,7 +7,23 @@ pub struct Game {
     pub player1: Paddle,
     pub player2: Paddle,
     pub ball: Ball,
-    pub container: Container,
+    pub divider: Divider,
+    pub score: Score,
+}
+
+#[derive(Debug)]
+pub struct Score {
+    pub player1: usize,
+    pub player2: usize,
+}
+
+impl Score {
+    fn new() -> Self {
+        Self {
+            player1: 0,
+            player2: 0,
+        }
+    }
 }
 
 impl Game {
@@ -33,31 +49,33 @@ impl Game {
             ydirection: 1,
         };
 
-        let container = Container::new();
+        let divider = Divider::new();
+        let score = Score::new();
 
         Self {
             player1,
             player2,
             ball,
-            container
+            divider,
+            score,
         }
     }
 }
 
 #[derive(Debug)]
 pub struct Ball {
-    x: usize,
-    y: usize,
-    xdirection: isize,
-    ydirection: isize,
+    pub x: usize,
+    pub y: usize,
+    pub xdirection: isize,
+    pub ydirection: isize,
 }
 
 #[derive(Debug)]
-pub struct Container {
+pub struct Divider {
     x: usize,
 }
 
-impl Container {
+impl Divider {
     pub fn new() -> Self {
         Self { x: WIDTH / 2 }
     }
