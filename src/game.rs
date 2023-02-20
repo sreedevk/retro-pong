@@ -50,21 +50,19 @@ pub struct Ball {
 
 impl Ball {
     pub fn tick(&mut self) {
-        return;
-        if self.x >= (WIDTH - 1) || self.x <= 1 {
-            if self.xdirection >= 0 {
-                self.xdirection = -1;
-            } else {
-                self.xdirection = 1;
-            }
+        if self.x >= (WIDTH - 1) {
+            self.xdirection = -1;
         }
 
-        if self.y >= (HEIGHT - 1) || self.y <= 1 {
-            if self.ydirection >= 0 {
-                self.ydirection = -1;
-            } else {
-                self.ydirection = -1;
-            }
+        if self.x <= 1 {
+            self.xdirection = 1;
+        }
+
+        if self.y >= HEIGHT {
+            self.ydirection = -1;
+        }
+        if self.y <= 0 {
+            self.ydirection = 1;
         }
 
         self.x = (self.x as isize + self.xdirection) as usize;
@@ -72,17 +70,17 @@ impl Ball {
     }
 
     pub fn draw(&self, frame: &mut Frame) -> Result<()> {
-        graphics::draw_rect(frame, self.x, self.y, 1, 1);
+        graphics::draw_rect(frame, self.y, self.x, 1, 1);
         Ok(())
     }
 }
 
 #[derive(Debug)]
 pub struct Paddle {
-    x1: usize,
-    y1: usize,
-    x2: usize,
-    y2: usize,
+    pub x1: usize,
+    pub y1: usize,
+    pub x2: usize,
+    pub y2: usize,
 }
 
 impl Paddle {

@@ -1,4 +1,4 @@
-use crate::frame::Frame;
+use crate::frame::{Frame, HEIGHT};
 use crate::game::Game;
 use anyhow::Result;
 use std::io::{stdin, stdout, StdoutLock, Write};
@@ -144,6 +144,16 @@ impl App {
                 )
                 .unwrap();
             });
+
+        write!(
+            self.stout,
+            "{}player1: ({},{}) ({}, {})",
+            termion::cursor::Goto(0, (HEIGHT + 1) as u16),
+            self.game.player1.x1,
+            self.game.player1.y1,
+            self.game.player1.x2,
+            self.game.player1.y2
+        )?;
 
         self.stout.flush().unwrap();
         Ok(())
