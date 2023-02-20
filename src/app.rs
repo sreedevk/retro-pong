@@ -24,6 +24,7 @@ pub struct App {
     game: Game,
     tx: std::sync::mpsc::Sender<Signal>,
     rx: std::sync::mpsc::Receiver<Signal>,
+    winner: Option<usize>
 }
 
 impl App {
@@ -38,6 +39,7 @@ impl App {
             game: Game::new(),
             tx,
             rx,
+            winner: None
         }
     }
 
