@@ -1,4 +1,5 @@
-use crate::{frame::{Frame, HEIGHT, WIDTH}, score::Sprite};
+use crate::frame::{Frame, HEIGHT, WIDTH};
+use crate::sprite::Sprite;
 
 pub const PIXON: char = '█';
 pub const PIXOFF: char = ' ';
@@ -51,5 +52,5 @@ pub fn draw_sprite(frame: &mut Frame, sprite: Sprite, x: usize, y: usize) {
                 frame.memory[i][j] = sprite[iindex][jindex];
             }
         }
-    } 
+    }
 }

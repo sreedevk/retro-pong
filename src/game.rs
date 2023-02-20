@@ -1,6 +1,8 @@
 use crate::frame::{Frame, HEIGHT, WIDTH};
 use crate::graphics::{self, PIXON};
+use crate::sprite::{self, Sprite};
 use anyhow::Result;
+use rand::Rng;
 
 #[derive(Debug)]
 pub struct Game {
@@ -23,6 +25,24 @@ impl Score {
             player1: 0,
             player2: 0,
         }
+    }
+
+    pub fn draw(&self, frame: &mut Frame) -> Result<()> {
+        graphics::draw_sprite(
+            frame,
+            sprite::SCORE_SPRITES[self.player1],
+            5,
+            (WIDTH / 2) - 10,
+        );
+
+        graphics::draw_sprite(
+            frame,
+            sprite::SCORE_SPRITES[self.player2],
+            5,
+            (WIDTH / 2) + 5,
+        );
+
+        Ok(())
     }
 }
 
@@ -110,10 +130,10 @@ impl Ball {
 
     pub fn new() -> Self {
         Self {
-            x: 10,
-            y: 10,
-            xdirection: 1,
-            ydirection: 1,
+            x: WIDTH / 2,
+            y: HEIGHT / 2,
+            xdirection: [1, -1][rand::thread_rng().gen_range(0..=1)],
+            ydirection: [1, -1][rand::thread_rng().gen_range(0..=1)],
         }
     }
 
