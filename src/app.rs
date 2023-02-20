@@ -80,7 +80,7 @@ impl App {
             self.draw()?;
             self.tick()?;
             self.render()?;
-            thread::sleep(Duration::from_millis(100));
+            thread::sleep(Duration::from_millis(50));
         }
     }
 
@@ -113,7 +113,7 @@ impl App {
 
     pub fn tick(&mut self) -> Result<()> {
         self.game.ball.tick();
-        self.update_scores()?;
+        self.update_state()?;
         self.process_signal()?;
         Ok(())
     }
@@ -129,22 +129,18 @@ impl App {
         Ok(())
     }
 
-    pub fn update_scores(&mut self) -> Result<()> {
+    pub fn update_state(&mut self) -> Result<()> {
         if self.game.ball.x == self.game.player1.x1 + 1
-            && (self.game.player1.y1..self.game.player1.y2).contains(&self.game.ball.y)
+            && !(self.game.player1.y1..self.game.player1.y2).contains(&self.game.ball.y)
         {
-            self.game.score.player1 += 1;
-        }
-
-        if self.game.ball.x == self.game.player2.x1 - 1
-            && (self.game.player2.y1..self.game.player2.y2).contains(&self.game.ball.y)
-        {
+            self.game.reset_ball()?;
             self.game.score.player2 += 1;
         }
 
-        if self.game.ball.x == self.game.player1.x1
-            && (self.game.player1.y1..self.game.player1.y2).contains(&self.game.ball.y)
+        if self.game.ball.x == self.game.player2.x1 - 1
+            && !(self.game.player2.y1..self.game.player2.y2).contains(&self.game.ball.y)
         {
+            self.game.reset_ball()?;
             self.game.score.player1 += 1;
         }
 

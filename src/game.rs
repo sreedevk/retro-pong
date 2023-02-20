@@ -42,23 +42,18 @@ impl Game {
             y2: 12,
         };
 
-        let ball = Ball {
-            x: 10,
-            y: 10,
-            xdirection: 1,
-            ydirection: 1,
-        };
-
-        let divider = Divider::new();
-        let score = Score::new();
-
         Self {
             player1,
             player2,
-            ball,
-            divider,
-            score,
+            ball: Ball::new(),
+            divider: Divider::new(),
+            score: Score::new(),
         }
+    }
+
+    pub fn reset_ball(&mut self) -> Result<()> {
+        self.ball = Ball::new();
+        Ok(())
     }
 }
 
@@ -111,6 +106,15 @@ impl Ball {
 
         self.x = (self.x as isize + self.xdirection) as usize;
         self.y = (self.y as isize + self.ydirection) as usize;
+    }
+
+    pub fn new() -> Self {
+        Self {
+            x: 10,
+            y: 10,
+            xdirection: 1,
+            ydirection: 1,
+        }
     }
 
     pub fn draw(&self, frame: &mut Frame) -> Result<()> {
