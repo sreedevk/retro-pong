@@ -119,6 +119,7 @@ impl App {
 
     pub fn draw(&mut self) -> Result<()> {
         let mut new_frame = Frame::new();
+        self.game.container.draw(&mut new_frame)?;
         self.game.player1.draw(&mut new_frame)?;
         self.game.player2.draw(&mut new_frame)?;
         self.game.ball.draw(&mut new_frame)?;

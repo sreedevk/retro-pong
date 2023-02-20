@@ -1,5 +1,5 @@
 use crate::frame::{Frame, HEIGHT, WIDTH};
-use crate::graphics;
+use crate::graphics::{self, PIXON};
 use anyhow::Result;
 
 #[derive(Debug)]
@@ -7,22 +7,23 @@ pub struct Game {
     pub player1: Paddle,
     pub player2: Paddle,
     pub ball: Ball,
+    pub container: Container,
 }
 
 impl Game {
     pub fn new() -> Self {
         let player1 = Paddle {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 10,
+            x1: 2,
+            y1: 2,
+            x2: 2,
+            y2: 12,
         };
 
         let player2 = Paddle {
-            x1: 127,
-            y1: 0,
-            x2: 127,
-            y2: 10,
+            x1: WIDTH - 3,
+            y1: 2,
+            x2: WIDTH - 3,
+            y2: 12,
         };
 
         let ball = Ball {
@@ -32,10 +33,13 @@ impl Game {
             ydirection: 1,
         };
 
+        let container = Container::new();
+
         Self {
             player1,
             player2,
             ball,
+            container
         }
     }
 }
@@ -48,20 +52,42 @@ pub struct Ball {
     ydirection: isize,
 }
 
+#[derive(Debug)]
+pub struct Container {
+    x: usize,
+}
+
+impl Container {
+    pub fn new() -> Self {
+        Self { x: WIDTH / 2 }
+    }
+
+    pub fn draw(&mut self, frame: &mut Frame) -> Result<()> {
+        (0..frame.memory.len())
+            .filter(|x| x % 2 == 0)
+            .into_iter()
+            .for_each(|my| {
+                frame.memory[my][self.x] = PIXON;
+            });
+
+        Ok(())
+    }
+}
+
 impl Ball {
     pub fn tick(&mut self) {
-        if self.x >= (WIDTH - 1) {
+        if self.x >= (WIDTH - 4) {
             self.xdirection = -1;
         }
 
-        if self.x <= 1 {
+        if self.x <= 3 {
             self.xdirection = 1;
         }
 
-        if self.y >= HEIGHT {
+        if self.y >= HEIGHT - 2 {
             self.ydirection = -1;
         }
-        if self.y <= 0 {
+        if self.y <= 1 {
             self.ydirection = 1;
         }
 
@@ -85,7 +111,7 @@ pub struct Paddle {
 
 impl Paddle {
     pub fn move_up(&mut self) -> Result<()> {
-        if self.y1 > 0 {
+        if self.y1 > 2 {
             self.y1 -= 1;
             self.y2 -= 1;
         }
@@ -93,7 +119,7 @@ impl Paddle {
     }
 
     pub fn move_down(&mut self) -> Result<()> {
-        if self.y2 < HEIGHT {
+        if self.y2 < (HEIGHT - 2) {
             self.y1 += 1;
             self.y2 += 1;
         }

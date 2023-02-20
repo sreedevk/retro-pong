@@ -1,4 +1,4 @@
-use crate::frame::{Frame, HEIGHT, WIDTH};
+use crate::{frame::{Frame, HEIGHT, WIDTH}, score::Sprite};
 
 pub const PIXON: char = '█';
 pub const PIXOFF: char = ' ';
@@ -42,4 +42,14 @@ pub fn draw_rect(frame: &mut Frame, x: usize, y: usize, width: usize, height: us
             }
         }
     }
+}
+
+pub fn draw_sprite(frame: &mut Frame, sprite: Sprite, x: usize, y: usize) {
+    for (iindex, i) in (x..(x + sprite.len())).enumerate() {
+        for (jindex, j) in (y..(y + sprite.len())).enumerate() {
+            if i < HEIGHT && j < WIDTH {
+                frame.memory[i][j] = sprite[iindex][jindex];
+            }
+        }
+    } 
 }

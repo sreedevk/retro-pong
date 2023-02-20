@@ -2,6 +2,7 @@ mod app;
 mod frame;
 mod game;
 mod graphics;
+mod score;
 
 use anyhow::Result;
 use app::App;
