@@ -1,4 +1,4 @@
-use crate::frame::Frame;
+use crate::frame::{Frame, HEIGHT, WIDTH};
 
 pub const PIXON: char = '█';
 pub const PIXOFF: char = ' ';
@@ -35,9 +35,9 @@ pub fn draw_line(frame: &mut Frame, y1: isize, x1: isize, y2: isize, x2: isize) 
 }
 
 pub fn draw_rect(frame: &mut Frame, x: usize, y: usize, width: usize, height: usize) {
-    for i in x..x + width {
-        for j in y..y + height {
-            if i < frame.memory.len() && j < frame.memory[i].len() {
+    for i in x..(x + width) {
+        for j in y..(y + height) {
+            if i < HEIGHT && j < WIDTH {
                 frame.memory[i][j] = PIXON;
             }
         }

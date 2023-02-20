@@ -1,11 +1,12 @@
-use crate::frame::Frame;
+use crate::frame::{Frame, HEIGHT, WIDTH};
 use crate::graphics;
 use anyhow::Result;
 
+#[derive(Debug)]
 pub struct Game {
     pub player1: Paddle,
     pub player2: Paddle,
-    pub ball: Ball
+    pub ball: Ball,
 }
 
 impl Game {
@@ -14,50 +15,69 @@ impl Game {
             x1: 0,
             y1: 0,
             x2: 0,
-            y2: 10
+            y2: 10,
         };
 
         let player2 = Paddle {
             x1: 127,
             y1: 0,
             x2: 127,
-            y2: 10
+            y2: 10,
         };
 
         let ball = Ball {
-            x: 64,
-            y: 16,
+            x: 10,
+            y: 10,
             xdirection: 1,
-            ydirection: 1
+            ydirection: 1,
         };
 
         Self {
             player1,
             player2,
-            ball
+            ball,
         }
     }
 }
 
+#[derive(Debug)]
 pub struct Ball {
     x: usize,
     y: usize,
     xdirection: isize,
-    ydirection: isize
+    ydirection: isize,
 }
 
 impl Ball {
     pub fn tick(&mut self) {
+        return;
+        if self.x >= (WIDTH - 1) || self.x <= 1 {
+            if self.xdirection >= 0 {
+                self.xdirection = -1;
+            } else {
+                self.xdirection = 1;
+            }
+        }
+
+        if self.y >= (HEIGHT - 1) || self.y <= 1 {
+            if self.ydirection >= 0 {
+                self.ydirection = -1;
+            } else {
+                self.ydirection = -1;
+            }
+        }
+
         self.x = (self.x as isize + self.xdirection) as usize;
         self.y = (self.y as isize + self.ydirection) as usize;
     }
 
     pub fn draw(&self, frame: &mut Frame) -> Result<()> {
-        graphics::draw_rect(frame, self.x, self.y, 2, 2);
+        graphics::draw_rect(frame, self.x, self.y, 1, 1);
         Ok(())
     }
 }
 
+#[derive(Debug)]
 pub struct Paddle {
     x1: usize,
     y1: usize,
@@ -67,14 +87,18 @@ pub struct Paddle {
 
 impl Paddle {
     pub fn move_up(&mut self) -> Result<()> {
-        self.y1 -= 1;
-        self.y2 -= 1;
+        if self.y1 > 0 {
+            self.y1 -= 1;
+            self.y2 -= 1;
+        }
         Ok(())
     }
 
     pub fn move_down(&mut self) -> Result<()> {
-        self.y1 += 1;
-        self.y2 += 1;
+        if self.y2 < HEIGHT {
+            self.y1 += 1;
+            self.y2 += 1;
+        }
         Ok(())
     }
 
