@@ -1,7 +1,8 @@
 # Retro Pong
 Yet another pong
 
-![pong](https://user-images.githubusercontent.com/36154121/220049543-37f26964-3606-47b9-9ea6-35daca681b2e.gif)
+![pong](https://user-images.githubusercontent.com/36154121/220380090-8c7b8f57-b069-4c0f-9f05-cd08a5168184.gif)
+
 
 ## Controls
 
