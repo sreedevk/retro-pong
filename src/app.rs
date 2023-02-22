@@ -45,8 +45,9 @@ impl App {
 
     pub fn kill(&mut self) {
         write!(self.stout, "{}", termion::clear::All).unwrap();
-        write!(self.stout, "{}", termion::style::Reset).unwrap();
         write!(self.stout, "{}", termion::cursor::Show).unwrap();
+        write!(self.stout, "{}", termion::style::Reset).unwrap();
+        self.stout.suspend_raw_mode().unwrap();
         exit(0)
     }
 
